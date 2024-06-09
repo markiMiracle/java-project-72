@@ -1,5 +1,4 @@
 package hexlet.code;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import gg.jte.ContentType;
@@ -30,9 +29,8 @@ public class App {
         return Integer.valueOf(port);
     }
     public static Javalin getApp() throws SQLException {
-
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl("jdbc:h2:mem:project:DB_CLOSE_DELAY=-1;");
+        hikariConfig.setJdbcUrl(System.getenv().getOrDefault("JAVA_DATABASE_URL", "jdbc:h2:mem:project:DB_CLOSE_DELAY=-1;"));
         var dataSource = new HikariDataSource(hikariConfig);
         var url = App.class.getClassLoader().getResourceAsStream("schema.sql");
         var sql = new BufferedReader(new InputStreamReader(url))
