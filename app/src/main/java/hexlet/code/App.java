@@ -11,6 +11,7 @@ import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
@@ -33,7 +34,12 @@ public class App {
         hikariConfig.setJdbcUrl(System.getenv().getOrDefault("JDBC_DATABASE_URL",
                 "jdbc:h2:mem:project:DB_CLOSE_DELAY=-1;"));
         var dataSource = new HikariDataSource(hikariConfig);
-        var url = App.class.getClassLoader().getResourceAsStream("schema.sql");
+        InputStream url;
+        if (hikariConfig.getJdbcUrl().equals("jdbc:h2:mem:project:DB_CLOSE_DELAY=-1;")) {
+            url = App.class.getClassLoader().getResourceAsStream("schema.sql");
+        } else {
+            url = App.class.getClassLoader().getResourceAsStream("postgreSchema.sql");
+        }
         var sql = new BufferedReader(new InputStreamReader(url))
                 .lines().collect(Collectors.joining("\n"));
 
