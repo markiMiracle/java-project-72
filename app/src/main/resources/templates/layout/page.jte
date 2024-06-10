@@ -39,7 +39,7 @@ ${content}
     <div class="container-xl">
         <div class="text-center">
             created by
-            <a href="https://ru.hexlet.io" target="_blank">Hexlet</a>
+            <a href="https://github.com/markiMiracle" target="_blank">markiMiracle</a>
         </div>
     </div>
 </footer>
