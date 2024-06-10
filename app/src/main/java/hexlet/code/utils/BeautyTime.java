@@ -7,7 +7,9 @@ public class BeautyTime {
         var stringTime = String.valueOf(time);
         var arrTime = stringTime.split(":");
         var beautyTime = arrTime[0] + ":";
-        beautyTime = beautyTime + time.toLocalDateTime().getMinute();
+        var minutes = time.toLocalDateTime().getMinute() > 9 ? String.valueOf(time.toLocalDateTime().getMinute())
+                : "0" + time.toLocalDateTime().getMinute();
+        beautyTime = beautyTime + minutes;
         beautyTime = beautyTime.replace('-', '/');
         return beautyTime;
     }
