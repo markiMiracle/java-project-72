@@ -40,7 +40,7 @@ public class AppTest {
     }
 
     @Test
-    void testUrlsShow() {
+    void testUrlsShowFail() {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/2");
             assertThat(response.code()).isEqualTo(404);
@@ -48,7 +48,7 @@ public class AppTest {
     }
 
     @Test
-    void testShowPost() throws Exception {
+    void testShowUrl() throws Exception {
         JavalinTest.test(app, (server, client) -> {
             var createdAt = new Timestamp(System.currentTimeMillis());
             var existingUrl = new Url("https://ru.hexlet.io/projects/72/members/39826?step=6", createdAt);
