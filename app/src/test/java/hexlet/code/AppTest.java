@@ -13,15 +13,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class AppTest {
-    private static Javalin app;
-    private static Url existingUrl;
+    public static Javalin app;
+
 
     @BeforeEach
-    void setup() throws SQLException {
+    public final void setUp() throws SQLException {
         app = App.getApp();
-        var createdAt = new Timestamp(System.currentTimeMillis());
-        existingUrl = new Url("https://ru.hexlet.io/projects/72/members/39826?step=6", createdAt);
-        UrlsRepository.save(existingUrl);
     }
 
     @Test
@@ -45,7 +42,7 @@ public class AppTest {
     @Test
     void testUrlsShow() {
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get("/urls/1");
+            var response = client.get("/urls/2");
             assertThat(response.code()).isEqualTo(404);
         });
     }
@@ -53,6 +50,9 @@ public class AppTest {
     @Test
     void testShowPost() throws Exception {
         JavalinTest.test(app, (server, client) -> {
+            var createdAt = new Timestamp(System.currentTimeMillis());
+            var existingUrl = new Url("https://ru.hexlet.io/projects/72/members/39826?step=6", createdAt);
+            UrlsRepository.save(existingUrl);
             var response = client.get("/urls/" + existingUrl.getId());
             assertThat(response.body().string()).contains("https://ru.hexlet.io");
         });
