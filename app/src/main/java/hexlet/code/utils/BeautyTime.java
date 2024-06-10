@@ -10,7 +10,10 @@ public class BeautyTime {
         var minutes = time.toLocalDateTime().getMinute() > 9 ? String.valueOf(time.toLocalDateTime().getMinute())
                 : "0" + time.toLocalDateTime().getMinute();
         beautyTime = beautyTime + minutes;
-        beautyTime = beautyTime.replace('-', '/');
+        arrTime = beautyTime.split(" ");
+        var hoursAndMinutes = arrTime[1];
+        arrTime = arrTime[0].split("-");
+        beautyTime = arrTime[2] + "/" + arrTime[1] + "/" + arrTime[0] + " " + hoursAndMinutes;
         return beautyTime;
     }
 }
