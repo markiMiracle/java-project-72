@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -17,7 +18,7 @@ public class AppTest {
 
 
     @BeforeEach
-    public final void setUp() throws SQLException {
+    public final void setUp() throws SQLException, IOException {
         app = App.getApp();
     }
 
