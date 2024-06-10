@@ -19,7 +19,7 @@ public final class JteshowGenerated {
 				jteOutput.writeUserContent(page.getUrl().getName());
 				jteOutput.writeContent("</td>\n                    </tr>\n                    <tr>\n                        <td>Дата создания</td>\n                        <td>");
 				jteOutput.setContext("td", null);
-				jteOutput.writeUserContent(BeautyTime.getBeautyTime(page.getUrl().getCreatedAt()));
+				jteOutput.writeUserContent(BeautyTime.getBeautyTime1(page.getUrl().getCreatedAt()));
 				jteOutput.writeContent("</td>\n                    </tr>\n                    </tbody>\n                </table>\n\n                <h2 class=\"mt-5\">Проверки</h2>\n                <form method=\"post\" action=\"/urls/1/checks\">\n                    <button type=\"submit\" class=\"btn btn-primary\">Запустить проверку</button>\n                </form>\n\n                <table class=\"table table-bordered table-hover mt-3\">\n                    <thead>\n                    <th class=\"col-1\">ID</th>\n                    <th class=\"col-1\">Код ответа</th>\n                    <th>title</th>\n                    <th>h1</th>\n                    <th>description</th>\n                    <th class=\"col-2\">Дата проверки</th>\n                    </thead>\n                    <tbody>\n\n                    </tbody>\n                </table>\n            </div>\n\n        </section>\n    </main>\n\n");
 			}
 		}, null);
