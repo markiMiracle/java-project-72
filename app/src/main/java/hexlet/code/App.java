@@ -42,10 +42,6 @@ public class App {
                 "jdbc:h2:mem:project:DB_CLOSE_DELAY=-1;"));
         var dataSource = new HikariDataSource(hikariConfig);
 
-        var fileName = hikariConfig.getJdbcUrl().equals("jdbc:h2:mem:project:DB_CLOSE_DELAY=-1;")
-                ? "schema.sql"
-                : "postgreSchema.sql";
-
         String sql = readResourceFile("schema.sql");
         log.info(sql);
 
