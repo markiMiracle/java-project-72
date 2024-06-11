@@ -46,7 +46,7 @@ public class App {
                 ? "schema.sql"
                 : "postgreSchema.sql";
 
-        String sql = readResourceFile(fileName);
+        String sql = readResourceFile("schema.sql");
         log.info(sql);
 
 

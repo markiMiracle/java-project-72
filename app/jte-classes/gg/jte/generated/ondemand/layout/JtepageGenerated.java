@@ -26,7 +26,7 @@ public final class JtepageGenerated {
 		jteOutput.writeContent(">Сайты</a>\n            </div>\n        </div>\n    </div>\n</nav>\n\n");
 		jteOutput.setContext("body", null);
 		jteOutput.writeUserContent(content);
-		jteOutput.writeContent("\n\n<footer class=\"footer border-top py-3 mt-5 bg-light\">\n    <div class=\"container-xl\">\n        <div class=\"text-center\">\n            created by\n            <a href=\"https://ru.hexlet.io\" target=\"_blank\">Hexlet</a>\n        </div>\n    </div>\n</footer>\n</body>\n</html>\n\n");
+		jteOutput.writeContent("\n\n<footer class=\"footer border-top py-3 mt-5 bg-light\">\n    <div class=\"container-xl\">\n        <div class=\"text-center\">\n            created by\n            <a href=\"https://github.com/markiMiracle\" target=\"_blank\">markiMiracle</a>\n        </div>\n    </div>\n</footer>\n</body>\n</html>\n\n");
 	}
 	public static void renderMap(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.Map<String, Object> params) {
 		Content content = (Content)params.get("content");
