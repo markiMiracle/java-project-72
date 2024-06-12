@@ -1,7 +1,6 @@
 package hexlet.code.controller;
-import java.io.IOException;
+
 import java.net.MalformedURLException;
-import java.net.NoRouteToHostException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -75,17 +74,17 @@ public class UrlsController {
 
         Unirest.config().defaultBaseUrl(url.getName());
 
-       try {
-           HttpResponse<String> response = Unirest.get(url.getName())
-                   .asString();
-           int statusCode = response.getStatus();
-           var urlCheck = new UrlCheck(urlId, createdAt, statusCode);
-           UrlChecksRepository.save(urlCheck);
-           ctx.sessionAttribute("flash", "Страница успешно проверена");
-           ctx.redirect(NamedRoutes.urlPath(urlId));
-       } catch (UnirestException e) {
-           ctx.sessionAttribute("flash", "Некоректный адрес");
-           ctx.redirect(NamedRoutes.urlPath(urlId));
-       }
+        try {
+            HttpResponse<String> response = Unirest.get(url.getName())
+                    .asString();
+            int statusCode = response.getStatus();
+            var urlCheck = new UrlCheck(urlId, createdAt, statusCode);
+            UrlChecksRepository.save(urlCheck);
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", "Некоректный адрес");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        }
     }
 }

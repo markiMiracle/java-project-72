@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.Deque;
-import java.util.List;
 
 @Getter
 @Setter

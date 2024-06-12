@@ -1,6 +1,5 @@
 package hexlet.code.repository;
 
-import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
 
 import java.sql.SQLException;
@@ -9,11 +8,11 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Optional;
 
 public class UrlChecksRepository extends BaseRepository {
     public static void save(UrlCheck urlCheck) throws SQLException {
-        var sql = "INSERT INTO url_checks (statusCode, title, h1, description, urlId, createdAt) VALUES (?, ?, ?, ?, ?, ?)";
+        var sql = "INSERT INTO url_checks (statusCode, title, h1, description, urlId, createdAt)"
+                + " VALUES (?, ?, ?, ?, ?, ?)";
 
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -62,21 +61,21 @@ public class UrlChecksRepository extends BaseRepository {
         }
     }
     public static List<UrlCheck> getEntitiesByChecks() throws SQLException {
-        var sql = "SELECT\n" +
-                "    urls.id AS id,\n" +
-                "    url_checks.statusCode AS statusCode,\n" +
-                "    url_checks.createdAt AS createdAt\n" +
-                "FROM urls\n" +
-                "INNER JOIN url_checks\n" +
-                "ON urls.id = url_checks.urlId\n" +
-                "INNER JOIN (\n" +
-                "    SELECT urlId, MAX(createdAt) AS maxCreatedAt\n" +
-                "    FROM url_checks\n" +
-                "    GROUP BY urlId\n" +
-                ") AS latest_checks\n" +
-                "ON url_checks.urlId = latest_checks.urlId\n" +
-                "AND url_checks.createdAt = latest_checks.maxCreatedAt\n" +
-                "ORDER BY id";
+        var sql = "SELECT\n"
+               + "    urls.id AS id,\n"
+               + "    url_checks.statusCode AS statusCode,\n"
+               + "    url_checks.createdAt AS createdAt\n"
+               + "FROM urls\n"
+               + "INNER JOIN url_checks\n"
+               + "ON urls.id = url_checks.urlId\n"
+               + "INNER JOIN (\n"
+               + "    SELECT urlId, MAX(createdAt) AS maxCreatedAt\n"
+               + "    FROM url_checks\n"
+               + "    GROUP BY urlId\n"
+               + ") AS latest_checks\n"
+               + "ON url_checks.urlId = latest_checks.urlId\n"
+               + "AND url_checks.createdAt = latest_checks.maxCreatedAt\n"
+               + "ORDER BY id";
 
         try (var connection = dataSource.getConnection();
                 var preparedStatement = connection.prepareStatement(sql)) {

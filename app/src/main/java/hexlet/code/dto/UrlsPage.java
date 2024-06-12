@@ -18,7 +18,7 @@ public class UrlsPage {
     private List<UrlCheck> urlChecks;
 
     public Optional<UrlCheck> findCheckById(Long id) {
-        for(var check: urlChecks) {
+        for (var check: urlChecks) {
             if (check.getUrlId().equals(id)) {
                 return Optional.of(check);
             }

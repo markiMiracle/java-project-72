@@ -5,9 +5,7 @@ import hexlet.code.model.UrlCheck;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
 
 @Getter
