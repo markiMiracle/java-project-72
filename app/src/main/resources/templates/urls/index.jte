@@ -1,5 +1,6 @@
 @import hexlet.code.dto.UrlsPage
 @import hexlet.code.utils.NamedRoutes
+@import hexlet.code.utils.BeautyTime
 @param UrlsPage page
 
 
@@ -43,10 +44,14 @@
                             <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
                         <td>
-
+                            @if(page.findCheckById(url.getId()).isPresent())
+                                ${BeautyTime.getBeautyTime(page.findCheckById(url.getId()).get().getCreatedAt())}
+                            @endif
                         </td>
                         <td>
-
+                            @if(page.findCheckById(url.getId()).isPresent())
+                                ${page.findCheckById(url.getId()).get().getStatusCode()}
+                            @endif
                         </td>
                     </tr>
                     @endfor

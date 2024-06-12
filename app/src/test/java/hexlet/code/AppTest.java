@@ -1,6 +1,5 @@
 package hexlet.code;
 
-
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlsRepository;
 import io.javalin.Javalin;
@@ -21,7 +20,6 @@ public class AppTest {
     public final void setUp() throws SQLException, IOException {
         app = App.getApp();
     }
-
     @Test
     void testMainPage() {
         JavalinTest.test(app, (server, client) -> {

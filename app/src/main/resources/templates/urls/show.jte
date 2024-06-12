@@ -6,6 +6,19 @@
 @template.layout.page(
     content = @`
     <main class="flex-grow-1">
+        @if(page.getFlash() != null)
+            @if(page.getFlash().equals("Некоректный адрес"))
+                <div class="rounded-0 m-0 alert alert-dismissible fade show alert-danger" role="alert">
+                    <p class="m-0">${page.getFlash()}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @else
+                <div class="rounded-0 m-0 alert alert-dismissible fade show alert-success" role="alert">
+                    <p class="m-0">${page.getFlash()}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        @endif
 
         <section>
 
@@ -30,7 +43,7 @@
                 </table>
 
                 <h2 class="mt-5">Проверки</h2>
-                <form method="post" action="/urls/1/checks">
+                <form method="post" action="/urls/${page.getUrl().getId()}/checks">
                     <button type="submit" class="btn btn-primary">Запустить проверку</button>
                 </form>
 
@@ -44,7 +57,36 @@
                     <th class="col-2">Дата проверки</th>
                     </thead>
                     <tbody>
+                    @if(!page.getUrlChecks().isEmpty())
+                        @for(var urlCheck: page.getUrlChecks())
+                            <tr>
+                                <td>
+                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
+                                        ${urlCheck.getId()}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
+                                        ${urlCheck.getStatusCode()}
+                                    @endif
+                                </td>
+                                <td>
 
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
+                                        ${BeautyTime.getBeautyTime(urlCheck.getCreatedAt())}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endfor
+                    @endif
                     </tbody>
                 </table>
             </div>

@@ -23,10 +23,17 @@ repositories {
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.30")
+    implementation("com.konghq:unirest-java:3.13.6")
+
+
+
+
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.25.3")
     testImplementation("com.konghq:unirest-java:3.13.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+
     implementation("io.javalin:javalin:6.1.3")
     implementation("io.javalin:javalin-bundle:6.1.3")
     implementation("org.slf4j:slf4j-simple:2.0.7")
