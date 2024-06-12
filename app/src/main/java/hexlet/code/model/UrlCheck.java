@@ -13,19 +13,19 @@ import java.sql.Timestamp;
 
 public class UrlCheck {
     private Long id;
+    private Long urlId;
     private Integer statusCode;
     private String title;
     private String h1;
     private String description;
-    private Long urlId;
     private final Timestamp createdAt;
 
     public UrlCheck(
-            int statusCode,
+            Long urlId,
+            Integer statusCode,
             String title,
             String h1,
             String description,
-            Long urlId,
             Timestamp createdAt) {
         this.statusCode = statusCode;
         this.title = title;
@@ -34,7 +34,7 @@ public class UrlCheck {
         this.urlId = urlId;
         this.createdAt = createdAt;
     }
-    public UrlCheck(Long urlId, Timestamp createdAt, Integer statusCode) {
+    public UrlCheck(Long urlId, Integer statusCode, Timestamp createdAt) {
         this.urlId = urlId;
         this.createdAt = createdAt;
         this.statusCode = statusCode;

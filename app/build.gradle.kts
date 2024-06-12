@@ -43,6 +43,7 @@ dependencies {
     implementation("com.h2database:h2:2.2.220")
     implementation("gg.jte:jte:3.1.9")
     implementation("org.postgresql:postgresql:42.7.2")
+    implementation("org.jsoup:jsoup:1.17.2")
 }
 
 tasks.test {

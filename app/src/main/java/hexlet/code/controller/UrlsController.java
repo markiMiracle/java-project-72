@@ -1,6 +1,9 @@
 package hexlet.code.controller;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,6 +23,9 @@ import io.javalin.http.NotFoundResponse;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -67,7 +73,7 @@ public class UrlsController {
         ctx.render("urls/show.jte", model("page", page));
     }
 
-    public static void check(Context ctx) throws SQLException {
+    public static void check(Context ctx) throws SQLException, IOException {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
         Url url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Url not found"));
         Timestamp createdAt = new Timestamp(System.currentTimeMillis());
@@ -78,10 +84,30 @@ public class UrlsController {
             HttpResponse<String> response = Unirest.get(url.getName())
                     .asString();
             int statusCode = response.getStatus();
-            var urlCheck = new UrlCheck(urlId, createdAt, statusCode);
-            UrlChecksRepository.save(urlCheck);
-            ctx.sessionAttribute("flash", "Страница успешно проверена");
-            ctx.redirect(NamedRoutes.urlPath(urlId));
+            try {
+                Document doc = Jsoup.connect(url.getName()).get();
+
+                String title = doc.title();
+
+                Element h1Element = doc.selectFirst("h1");
+                String h1 = h1Element == null ? "" : h1Element.ownText();
+
+                Element descriptionElement = doc.selectFirst("meta[name=description]");
+                String description = descriptionElement == null
+                        ? ""
+                        : descriptionElement.attr("content");
+
+                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description, createdAt);
+                UrlChecksRepository.save(urlCheck);
+                ctx.sessionAttribute("flash", "Страница успешно проверена");
+                ctx.redirect(NamedRoutes.urlPath(urlId));
+
+            } catch (SocketTimeoutException e) {
+                var urlCheck = new UrlCheck(urlId, statusCode, createdAt);
+                UrlChecksRepository.save(urlCheck);
+                ctx.sessionAttribute("flash", "Страница успешно проверена");
+                ctx.redirect(NamedRoutes.urlPath(urlId));
+            }
         } catch (UnirestException e) {
             ctx.sessionAttribute("flash", "Некоректный адрес");
             ctx.redirect(NamedRoutes.urlPath(urlId));

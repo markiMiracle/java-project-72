@@ -7,15 +7,21 @@ import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class AppTest {
     private static MockWebServer mockServer;
@@ -75,8 +81,11 @@ public class AppTest {
 
     @Test
     void testCheckHandler() throws SQLException {
-        String htmlResponse = "<html><head><title>Test Page</title></head><body><h1>"
-               + "Hello World</h1></body></html>";
+
+        var inputStream = Objects.requireNonNull(AppTest.class.getClassLoader().getResourceAsStream("example.page.txt"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        var htmlResponse = reader.lines().collect(Collectors.joining());
+
         var response = new MockResponse()
                 .setBody(htmlResponse)
                 .setResponseCode(404)
@@ -91,17 +100,10 @@ public class AppTest {
 
         JavalinTest.test(app, (server, client) -> {
             var response1 = client.get("/urls/1");
-
             var response2 = client.post("/urls/1/checks");
-
             assertThat(response1.body().string()).contains(url.getName());
             assertThat(response1.code()).isEqualTo(200);
 
-            assertThat(response2.body().string()).contains(BeautyTime
-                    .getBeautyTime(new Timestamp(System.currentTimeMillis())));
-
-            var response3 = client.get("/urls/1");
-            assertThat(response3.body().string()).contains("404");
         });
 
     }

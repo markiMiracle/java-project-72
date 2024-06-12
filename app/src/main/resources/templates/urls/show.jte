@@ -71,13 +71,19 @@
                                     @endif
                                 </td>
                                 <td>
-
+                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
+                                        ${urlCheck.getTitle()}
+                                    @endif
                                 </td>
                                 <td>
-
+                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
+                                        ${urlCheck.getH1()}
+                                    @endif
                                 </td>
                                 <td>
-
+                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
+                                        ${urlCheck.getDescription()}
+                                    @endif
                                 </td>
                                 <td>
                                     @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
