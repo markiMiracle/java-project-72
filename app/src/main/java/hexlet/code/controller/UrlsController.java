@@ -81,7 +81,7 @@ public class UrlsController {
 
             String title = doc.title();
 
-            Element h1Element = doc.getElementsByTag("h1").first();
+            Element h1Element = doc.selectFirst("h1");
             String h1 = h1Element == null ? "" : h1Element.ownText();
 
             Element descriptionElement = doc.selectFirst("meta[name=description]");
