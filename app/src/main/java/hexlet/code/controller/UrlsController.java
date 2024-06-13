@@ -2,8 +2,6 @@ package hexlet.code.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -22,7 +20,6 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import kong.unirest.UnirestException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -43,14 +40,12 @@ public class UrlsController {
             var urlName = new URL(Objects.requireNonNull(noValidName));
             String name = urlName.getProtocol() + "://" + urlName.getAuthority();
             var url = new Url(name, createdAt);
-            try {
-                UrlsRepository.save(url);
-                ctx.sessionAttribute("flash", "Страница успешно добавлена");
-                ctx.redirect(NamedRoutes.urlsPath());
-            } catch (SQLException e) {
-                ctx.sessionAttribute("flash", "Страница уже существует");
-                ctx.redirect(NamedRoutes.urlsPath());
-            }
+            UrlsRepository.save(url);
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
+            ctx.redirect(NamedRoutes.urlsPath());
+        } catch (SQLException e) {
+            ctx.sessionAttribute("flash", "Страница уже существует");
+            ctx.redirect(NamedRoutes.urlsPath());
         } catch (MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некоректный URL");
             ctx.redirect(NamedRoutes.rootPath());
@@ -77,38 +72,28 @@ public class UrlsController {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
         Url url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Url not found"));
         Timestamp createdAt = new Timestamp(System.currentTimeMillis());
-
-        Unirest.config().defaultBaseUrl(url.getName());
-
         try {
             HttpResponse<String> response = Unirest.get(url.getName())
                     .asString();
             int statusCode = response.getStatus();
-            try {
-                Document doc = Jsoup.connect(url.getName()).get();
 
-                String title = doc.title();
+            Document doc = Jsoup.parse(response.getBody());
 
-                Element h1Element = doc.selectFirst("h1");
-                String h1 = h1Element == null ? "" : h1Element.ownText();
+            String title = doc.title();
 
-                Element descriptionElement = doc.selectFirst("meta[name=description]");
-                String description = descriptionElement == null
-                        ? ""
-                        : descriptionElement.attr("content");
+            Element h1Element = doc.getElementsByTag("h1").first();
+            String h1 = h1Element == null ? "" : h1Element.ownText();
 
-                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description, createdAt);
-                UrlChecksRepository.save(urlCheck);
-                ctx.sessionAttribute("flash", "Страница успешно проверена");
-                ctx.redirect(NamedRoutes.urlPath(urlId));
+            Element descriptionElement = doc.selectFirst("meta[name=description]");
+            String description = descriptionElement == null
+                    ? ""
+                    : descriptionElement.attr("content");
 
-            } catch (SocketTimeoutException e) {
-                var urlCheck = new UrlCheck(urlId, statusCode, createdAt);
-                UrlChecksRepository.save(urlCheck);
-                ctx.sessionAttribute("flash", "Страница успешно проверена");
-                ctx.redirect(NamedRoutes.urlPath(urlId));
-            }
-        } catch (UnirestException e) {
+            var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description, createdAt);
+            UrlChecksRepository.save(urlCheck);
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некоректный адрес");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         }
