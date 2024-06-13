@@ -95,7 +95,8 @@ public class AppTest {
     @Test
     public void testCheckPath() throws SQLException {
         var createdAt = new Timestamp(System.currentTimeMillis());
-        UrlsRepository.save(new Url(testUrl, createdAt));
+        var url = new Url(10L, testUrl, createdAt);
+        UrlsRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             try (var response = client.post(NamedRoutes.urlCheckPath(1L))) {
                 assertThat(response.code()).isEqualTo(200);
