@@ -12,7 +12,7 @@
 - ### ***About it:***
   "Page Analyzer" is a tool that analyzes web pages to determine their SEO (search engine optimization) suitability.
   Add some references to the main page you want to check. After that, you will be redirected to /urls with a list of all the references you added.
-- [My website](https://java-project-72-1oky.onrender.com)
+- [My Website](https://java-project-72-1oky.onrender.com)
 
 
 ## Setup
