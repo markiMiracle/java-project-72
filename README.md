@@ -1,3 +1,7 @@
+### JAVA-PROJECT
+## ***PAGE ANALYZER***
+
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/markiMiracle/java-project-72/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/markiMiracle/java-project-72/actions)
 [![Actions Status](https://github.com/markiMiracle/java-project-72/actions/workflows/tests.yml/badge.svg)](https://github.com/markiMiracle/java-project-72/actions)
@@ -6,4 +10,6 @@
 
 
 
+
+"Page Analyzer" is a tool that analyzes web pages to determine their SEO (search engine optimization) suitability.
 [My app](https://java-project-72-1oky.onrender.com)
