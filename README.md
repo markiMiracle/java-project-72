@@ -14,3 +14,28 @@
   Add some references to the main page you want to check. After that, you will be redirected to /urls with a list of all the references you added.
 
 [My website](https://java-project-72-1oky.onrender.com)
+
+
+## Setup
+
+```bash
+make build
+```
+
+## Run
+
+```bash
+make run
+```
+
+## Run checkstyle
+
+```bash
+make lint
+```
+
+## Run tests
+
+```bash
+make test
+```
