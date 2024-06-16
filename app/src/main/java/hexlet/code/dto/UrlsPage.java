@@ -12,7 +12,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UrlsPage {
+public final class UrlsPage {
     private List<Url> urls;
     private String flash;
     private List<UrlCheck> urlChecks;
