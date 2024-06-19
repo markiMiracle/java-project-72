@@ -85,7 +85,8 @@ public class UrlChecksRepository extends BaseRepository {
                 var urlId = resultSet.getLong("id");
                 var statusCode = resultSet.getInt("status_code");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var urlAndCheck = new UrlCheck(urlId, statusCode, createdAt);
+                var urlAndCheck = new UrlCheck(urlId, statusCode);
+                urlAndCheck.setCreatedAt(createdAt);
                 entities.add(urlAndCheck);
             }
             return entities;

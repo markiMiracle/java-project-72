@@ -13,17 +13,15 @@ import java.util.Deque;
 public class Url {
     private Long id;
     private final String name;
-    private final Timestamp createdAt;
+    private Timestamp createdAt;
     private Deque<UrlCheck> urlChecks;
 
 
-    public Url(Long id, String name, Timestamp createdAt) {
+    public Url(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.createdAt = createdAt;
     }
-    public Url(String name, Timestamp createdAt) {
+    public Url(String name) {
         this.name = name;
-        this.createdAt = createdAt;
     }
 }

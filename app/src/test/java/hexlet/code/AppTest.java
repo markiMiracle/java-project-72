@@ -83,7 +83,8 @@ public class AppTest {
     void testShowUrlHandler() throws Exception {
         JavalinTest.test(app, (server, client) -> {
             var createdAt = new Timestamp(System.currentTimeMillis());
-            var existingUrl = new Url("https://ru.hexlet.io/projects/72/members/39826?step=6", createdAt);
+            var existingUrl = new Url("https://ru.hexlet.io/projects/72/members/39826?step=6");
+            existingUrl.setCreatedAt(createdAt);
             UrlsRepository.save(existingUrl);
             var response = client.get("/urls/" + existingUrl.getId());
             var response2 = client.post("/urls/" + existingUrl.getId() + "/checks");
@@ -95,7 +96,8 @@ public class AppTest {
     @Test
     public void testCheckPath() throws SQLException {
         var createdAt = new Timestamp(System.currentTimeMillis());
-        var url = new Url(10L, testUrl, createdAt);
+        var url = new Url(10L, testUrl);
+        url.setCreatedAt(createdAt);
         UrlsRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             try (var response = client.post(NamedRoutes.urlCheckPath(1L))) {

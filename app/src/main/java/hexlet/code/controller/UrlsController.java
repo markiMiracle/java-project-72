@@ -33,13 +33,14 @@ public class UrlsController {
         ctx.render("index.jte", model("page", page));
     }
 
-    public static void create(Context ctx) throws URISyntaxException, SQLException {
+    public static void create(Context ctx) {
         Timestamp createdAt = new Timestamp(System.currentTimeMillis());
         try {
             var noValidName = ctx.formParam("url");
             var urlName = new URL(Objects.requireNonNull(noValidName));
             String name = urlName.getProtocol() + "://" + urlName.getAuthority();
-            var url = new Url(name, createdAt);
+            var url = new Url(name);
+            url.setCreatedAt(createdAt);
             UrlsRepository.save(url);
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.redirect(NamedRoutes.urlsPath());
@@ -89,7 +90,8 @@ public class UrlsController {
                     ? ""
                     : descriptionElement.attr("content");
 
-            var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description, createdAt);
+            var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
+            urlCheck.setCreatedAt(createdAt);
             UrlChecksRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.redirect(NamedRoutes.urlPath(urlId));

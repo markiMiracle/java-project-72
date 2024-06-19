@@ -17,12 +17,4 @@ public final class UrlsPage {
     private String flash;
     private List<UrlCheck> urlChecks;
 
-    public Optional<UrlCheck> findCheckById(Long id) {
-        for (var check: urlChecks) {
-            if (check.getUrlId().equals(id)) {
-                return Optional.of(check);
-            }
-        }
-        return Optional.empty();
-    }
 }
