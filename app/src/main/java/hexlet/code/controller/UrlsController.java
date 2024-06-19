@@ -2,7 +2,6 @@ package hexlet.code.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
