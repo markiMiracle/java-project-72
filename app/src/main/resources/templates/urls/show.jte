@@ -57,38 +57,27 @@
                     <th class="col-2">Дата проверки</th>
                     </thead>
                     <tbody>
-                    @if(!page.getUrlChecks().isEmpty())
-                        @for(var urlCheck: page.getUrlChecks())
+                    @if(!page.getUrl().getUrlChecks().isEmpty())
+                        @for(var urlCheck: page.getUrl().getUrlChecks())
                             <tr>
                                 <td>
-                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
-                                        ${urlCheck.getId()}
-                                    @endif
+                                    ${urlCheck.getId()}
+
                                 </td>
                                 <td>
-                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
-                                        ${urlCheck.getStatusCode()}
-                                    @endif
+                                    ${urlCheck.getStatusCode()}
                                 </td>
                                 <td>
-                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
-                                        ${urlCheck.getTitle()}
-                                    @endif
+                                    ${urlCheck.getTitle()}
                                 </td>
                                 <td>
-                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
-                                        ${urlCheck.getH1()}
-                                    @endif
+                                    ${urlCheck.getH1()}
                                 </td>
                                 <td>
-                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
-                                        ${urlCheck.getDescription()}
-                                    @endif
+                                    ${urlCheck.getDescription()}
                                 </td>
                                 <td>
-                                    @if(urlCheck.getUrlId().equals(page.getUrl().getId()))
-                                        ${BeautyTime.getBeautyTime(urlCheck.getCreatedAt())}
-                                    @endif
+                                    ${BeautyTime.getBeautyTime(urlCheck.getCreatedAt())}
                                 </td>
                             </tr>
                         @endfor

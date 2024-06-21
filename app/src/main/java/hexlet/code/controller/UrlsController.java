@@ -33,13 +33,11 @@ public class UrlsController {
     }
 
     public static void create(Context ctx) {
-        Timestamp createdAt = new Timestamp(System.currentTimeMillis());
         try {
             var noValidName = ctx.formParam("url");
             var urlName = new URL(Objects.requireNonNull(noValidName));
             String name = urlName.getProtocol() + "://" + urlName.getAuthority();
             var url = new Url(name);
-            url.setCreatedAt(createdAt);
             UrlsRepository.save(url);
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.redirect(NamedRoutes.urlsPath());
@@ -55,7 +53,7 @@ public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var page = new UrlsPage(UrlsRepository.getEntities(),
                 ctx.consumeSessionAttribute("flash"),
-                UrlChecksRepository.getEntitiesByChecks());
+                UrlChecksRepository.findLatestChecks());
         ctx.render("urls/index.jte", model("page", page));
     }
 
@@ -64,14 +62,13 @@ public class UrlsController {
         var url = UrlsRepository.find(id).orElseThrow(() -> new NotFoundResponse("Url not found"));
         url.setUrlChecks(UrlChecksRepository.getEntitiesByUrlId(id));
         String flash = ctx.consumeSessionAttribute("flash");
-        var page = new UrlPage(url, flash, UrlChecksRepository.getEntitiesByUrlId(id));
+        var page = new UrlPage(url, flash);
         ctx.render("urls/show.jte", model("page", page));
     }
 
     public static void check(Context ctx) throws SQLException, IOException {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
         Url url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Url not found"));
-        Timestamp createdAt = new Timestamp(System.currentTimeMillis());
         try {
             HttpResponse<String> response = Unirest.get(url.getName())
                     .asString();
@@ -89,14 +86,13 @@ public class UrlsController {
                     ? ""
                     : descriptionElement.attr("content");
 
-            var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
-            urlCheck.setCreatedAt(createdAt);
+            var urlCheck = new UrlCheck(statusCode, title, h1, description);
+            urlCheck.setUrlId(url.getId());
             UrlChecksRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
-            ctx.redirect(NamedRoutes.urlPath(urlId));
         } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некоректный адрес");
-            ctx.redirect(NamedRoutes.urlPath(urlId));
         }
+        ctx.redirect(NamedRoutes.urlPath(urlId));
     }
 }

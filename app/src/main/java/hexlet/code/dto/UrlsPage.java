@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
+import java.util.Map;
 
 
 @Getter
@@ -14,6 +15,6 @@ import java.util.List;
 public final class UrlsPage {
     private List<Url> urls;
     private String flash;
-    private List<UrlCheck> urlChecks;
+    private Map<Long, UrlCheck> urlChecks;
 
 }

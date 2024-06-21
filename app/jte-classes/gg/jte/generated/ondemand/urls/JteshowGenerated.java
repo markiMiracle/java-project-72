@@ -3,7 +3,7 @@ import hexlet.code.dto.UrlPage;
 import hexlet.code.utils.BeautyTime;
 public final class JteshowGenerated {
 	public static final String JTE_NAME = "urls/show.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,5,5,7,7,9,9,10,10,12,12,12,15,15,17,17,17,20,20,21,21,26,26,26,32,32,32,36,36,36,40,40,40,46,46,46,46,60,60,61,61,64,64,65,65,65,66,66,69,69,70,70,70,71,71,74,74,75,75,75,76,76,79,79,80,80,80,81,81,84,84,85,85,85,86,86,89,89,90,90,90,91,91,94,94,95,95,103,103,103,103,103,2,2,2,2};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,5,5,7,7,9,9,10,10,12,12,12,15,15,17,17,17,20,20,21,21,26,26,26,32,32,32,36,36,36,40,40,40,46,46,46,46,60,60,61,61,64,64,64,68,68,68,71,71,71,74,74,74,77,77,77,80,80,80,83,83,84,84,92,92,92,92,92,2,2,2,2};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, UrlPage page) {
 		jteOutput.writeContent("\n\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -41,51 +41,27 @@ public final class JteshowGenerated {
 				jteOutput.writeUserContent(page.getUrl().getId());
 				jteOutput.setContext("form", null);
 				jteOutput.writeContent("/checks\">\n                    <button type=\"submit\" class=\"btn btn-primary\">Запустить проверку</button>\n                </form>\n\n                <table class=\"table table-bordered table-hover mt-3\">\n                    <thead>\n                    <th class=\"col-1\">ID</th>\n                    <th class=\"col-1\">Код ответа</th>\n                    <th>title</th>\n                    <th>h1</th>\n                    <th>description</th>\n                    <th class=\"col-2\">Дата проверки</th>\n                    </thead>\n                    <tbody>\n                    ");
-				if (!page.getUrlChecks().isEmpty()) {
+				if (!page.getUrl().getUrlChecks().isEmpty()) {
 					jteOutput.writeContent("\n                        ");
-					for (var urlCheck: page.getUrlChecks()) {
+					for (var urlCheck: page.getUrl().getUrlChecks()) {
 						jteOutput.writeContent("\n                            <tr>\n                                <td>\n                                    ");
-						if (urlCheck.getUrlId().equals(page.getUrl().getId())) {
-							jteOutput.writeContent("\n                                        ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(urlCheck.getId());
-							jteOutput.writeContent("\n                                    ");
-						}
+						jteOutput.setContext("td", null);
+						jteOutput.writeUserContent(urlCheck.getId());
+						jteOutput.writeContent("\n\n                                </td>\n                                <td>\n                                    ");
+						jteOutput.setContext("td", null);
+						jteOutput.writeUserContent(urlCheck.getStatusCode());
 						jteOutput.writeContent("\n                                </td>\n                                <td>\n                                    ");
-						if (urlCheck.getUrlId().equals(page.getUrl().getId())) {
-							jteOutput.writeContent("\n                                        ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(urlCheck.getStatusCode());
-							jteOutput.writeContent("\n                                    ");
-						}
+						jteOutput.setContext("td", null);
+						jteOutput.writeUserContent(urlCheck.getTitle());
 						jteOutput.writeContent("\n                                </td>\n                                <td>\n                                    ");
-						if (urlCheck.getUrlId().equals(page.getUrl().getId())) {
-							jteOutput.writeContent("\n                                        ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(urlCheck.getTitle());
-							jteOutput.writeContent("\n                                    ");
-						}
+						jteOutput.setContext("td", null);
+						jteOutput.writeUserContent(urlCheck.getH1());
 						jteOutput.writeContent("\n                                </td>\n                                <td>\n                                    ");
-						if (urlCheck.getUrlId().equals(page.getUrl().getId())) {
-							jteOutput.writeContent("\n                                        ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(urlCheck.getH1());
-							jteOutput.writeContent("\n                                    ");
-						}
+						jteOutput.setContext("td", null);
+						jteOutput.writeUserContent(urlCheck.getDescription());
 						jteOutput.writeContent("\n                                </td>\n                                <td>\n                                    ");
-						if (urlCheck.getUrlId().equals(page.getUrl().getId())) {
-							jteOutput.writeContent("\n                                        ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(urlCheck.getDescription());
-							jteOutput.writeContent("\n                                    ");
-						}
-						jteOutput.writeContent("\n                                </td>\n                                <td>\n                                    ");
-						if (urlCheck.getUrlId().equals(page.getUrl().getId())) {
-							jteOutput.writeContent("\n                                        ");
-							jteOutput.setContext("td", null);
-							jteOutput.writeUserContent(BeautyTime.getBeautyTime(urlCheck.getCreatedAt()));
-							jteOutput.writeContent("\n                                    ");
-						}
+						jteOutput.setContext("td", null);
+						jteOutput.writeUserContent(BeautyTime.getBeautyTime(urlCheck.getCreatedAt()));
 						jteOutput.writeContent("\n                                </td>\n                            </tr>\n                        ");
 					}
 					jteOutput.writeContent("\n                    ");

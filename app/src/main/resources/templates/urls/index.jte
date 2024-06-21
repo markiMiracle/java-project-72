@@ -1,5 +1,4 @@
 @import hexlet.code.dto.UrlsPage
-@import hexlet.code.utils.FindCheck
 @import hexlet.code.utils.NamedRoutes
 @import hexlet.code.utils.BeautyTime
 @param UrlsPage page
@@ -44,14 +43,22 @@
                         <td>
                             <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
-                        <td>
-                            @if(FindCheck.findCheckByParentId(url.getId(), page.getUrlChecks()).isPresent())
-                                ${BeautyTime.getBeautyTime(FindCheck.findCheckByParentId(url.getId(), page.getUrlChecks()).get().getCreatedAt())}
-                        </td>
-                        <td>
-                                ${FindCheck.findCheckByParentId(url.getId(), page.getUrlChecks()).get().getStatusCode()}
-                            @endif
-                        </td>
+                        @if(page.getUrlChecks().get(url.getId()) != null)
+                            <td>
+                                ${BeautyTime.getBeautyTime(page.getUrlChecks().get(url.getId()).getCreatedAt())}
+                            </td>
+                            <td>
+                                ${page.getUrlChecks().get(url.getId()).getStatusCode()}
+                            </td>
+                        @else
+                            <td>
+
+                            </td>
+                            <td>
+
+                            </td>
+                        @endif
+
                     </tr>
                     @endfor
 
