@@ -106,4 +106,18 @@ public class AppTest {
             }
         });
     }
+
+    @Test
+    public void testUrlsRepository() throws SQLException {
+        Url url1 = new Url(testUrl);
+        Url url2 = new Url("https://miracle.com");
+        UrlsRepository.save(url1);
+        UrlsRepository.save(url2);
+
+        assertThat(url1.getName()).isEqualTo(UrlsRepository.findByName(testUrl).get().getName());
+
+        assertThat(url2.getName()).isEqualTo(UrlsRepository.find(2L).get().getName());
+
+        assertThat(UrlsRepository.getEntities().size()).isEqualTo(2);
+    }
 }
