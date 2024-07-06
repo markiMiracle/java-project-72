@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UrlPage {
+public class UrlPage extends BasePage {
     private Url url;
-    private String flash;
 }

@@ -1,12 +1,11 @@
 package hexlet.code.controller;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Objects;
 
-import hexlet.code.dto.MainPage;
+import hexlet.code.dto.BasePage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
@@ -26,33 +25,48 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class UrlsController {
     public static void root(Context ctx) {
-        var page = new MainPage();
+        var page = new BasePage();
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("index.jte", model("page", page));
     }
 
-    public static void create(Context ctx) {
+    public static void create(Context ctx) throws SQLException {
+        var inputUrl = ctx.formParam("url");
+        URL parsedUrl;
         try {
-            var noValidName = ctx.formParam("url");
-            var urlName = new URL(Objects.requireNonNull(noValidName));
-            String name = urlName.getProtocol() + "://" + urlName.getAuthority();
-            var url = new Url(name);
+            var uri = new URI(inputUrl);
+            parsedUrl = uri.toURL();
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Некоректный URL");
+            ctx.sessionAttribute("flashType", "danger");
+            ctx.redirect(NamedRoutes.rootPath());
+            return;
+        }
+        String normalizedUrl = String
+                .format(
+                        "%s://%s%s",
+                        parsedUrl.getProtocol(),
+                        parsedUrl.getHost(),
+                        parsedUrl.getPort() == -1 ? "" : ":" + parsedUrl.getPort()
+                )
+                .toLowerCase();
+        if (UrlsRepository.findByName(normalizedUrl).orElse(null) == null) {
+            var url = new Url(normalizedUrl);
             UrlsRepository.save(url);
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            ctx.redirect(NamedRoutes.urlsPath());
-        } catch (SQLException e) {
+            ctx.sessionAttribute("flashType", "correct");
+        } else {
             ctx.sessionAttribute("flash", "Страница уже существует");
-            ctx.redirect(NamedRoutes.urlsPath());
-        } catch (MalformedURLException e) {
-            ctx.sessionAttribute("flash", "Некоректный URL");
-            ctx.redirect(NamedRoutes.rootPath());
+            ctx.sessionAttribute("flashType", "exists");
         }
+        ctx.redirect(NamedRoutes.urlsPath());
     }
 
     public static void index(Context ctx) throws SQLException {
         var page = new UrlsPage(UrlsRepository.getEntities(),
-                ctx.consumeSessionAttribute("flash"),
                 UrlChecksRepository.findLatestChecks());
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/index.jte", model("page", page));
     }
 
@@ -60,8 +74,9 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlsRepository.find(id).orElseThrow(() -> new NotFoundResponse("Url not found"));
         url.setUrlChecks(UrlChecksRepository.getEntitiesByUrlId(id));
-        String flash = ctx.consumeSessionAttribute("flash");
-        var page = new UrlPage(url, flash);
+        var page = new UrlPage(url);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/show.jte", model("page", page));
     }
 
@@ -89,8 +104,10 @@ public class UrlsController {
             urlCheck.setUrlId(url.getId());
             UrlChecksRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flashType", "correct");
         } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некоректный адрес");
+            ctx.sessionAttribute("flashType", "danger");
         }
         ctx.redirect(NamedRoutes.urlPath(urlId));
     }

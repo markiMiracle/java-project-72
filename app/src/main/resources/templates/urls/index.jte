@@ -8,7 +8,7 @@
     content = @`
     <main class="flex-grow-1">
     @if(page.getFlash() != null)
-        @if(page.getFlash().equals("Страница уже существует"))
+        @if(page.getFlashType().equals("exists"))
             <div class="rounded-0 m-0 alert alert-dismissible fade show alert-info" role="alert">
                 <p class="m-0">${page.getFlash()}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -35,7 +35,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @for(var url: page.getUrls())
+                @for(var url : page.getUrls())
+                    !{var urlCheck = page.getUrlChecks().get(url.getId());}
+
                     <tr>
                         <td>
                             ${url.getId()}
@@ -43,24 +45,15 @@
                         <td>
                             <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
-                        @if(page.getUrlChecks().get(url.getId()) != null)
-                            <td>
-                                ${BeautyTime.getBeautyTime(page.getUrlChecks().get(url.getId()).getCreatedAt())}
-                            </td>
-                            <td>
-                                ${page.getUrlChecks().get(url.getId()).getStatusCode()}
-                            </td>
-                        @else
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                        @endif
+                        <td>
+                            ${urlCheck == null ? "" : BeautyTime.getBeautyTime(urlCheck.getCreatedAt())}
+                        </td>
+                        <td>
+                            ${urlCheck == null ? "" : String.valueOf(urlCheck.getStatusCode())}
+                        </td>
 
                     </tr>
-                    @endfor
+                @endfor
 
                 </tbody>
             </table>

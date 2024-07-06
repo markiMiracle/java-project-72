@@ -48,6 +48,24 @@ public class UrlsRepository extends BaseRepository {
             return Optional.empty();
         }
     }
+    public static Optional<Url> findByName(String name) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE name = ?";
+        try (var connection = dataSource.getConnection();
+                var preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                var createdAt = resultSet.getTimestamp("created_at");
+                var id = resultSet.getLong("id");
+                var url = new Url(name);
+                url.setCreatedAt(createdAt);
+                url.setId(id);
+                return Optional.of(url);
+            }
+            return Optional.empty();
+        }
+    }
+
 
     public static List<Url> getEntities() throws SQLException {
         var sql = "SELECT * FROM urls";

@@ -1,5 +1,5 @@
-@import hexlet.code.dto.MainPage
-@param MainPage page
+@import hexlet.code.dto.BasePage
+@param BasePage page
 
 @template.layout.page (
     content = @`

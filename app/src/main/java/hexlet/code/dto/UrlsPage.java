@@ -12,9 +12,7 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
-public final class UrlsPage {
+public final class UrlsPage extends BasePage {
     private List<Url> urls;
-    private String flash;
     private Map<Long, UrlCheck> urlChecks;
-
 }

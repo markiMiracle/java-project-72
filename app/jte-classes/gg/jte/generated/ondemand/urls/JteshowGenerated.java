@@ -11,7 +11,7 @@ public final class JteshowGenerated {
 				jteOutput.writeContent("\n    <main class=\"flex-grow-1\">\n        ");
 				if (page.getFlash() != null) {
 					jteOutput.writeContent("\n            ");
-					if (page.getFlash().equals("Некоректный адрес")) {
+					if (page.getFlashType().equals("danger")) {
 						jteOutput.writeContent("\n                <div class=\"rounded-0 m-0 alert alert-dismissible fade show alert-danger\" role=\"alert\">\n                    <p class=\"m-0\">");
 						jteOutput.setContext("p", null);
 						jteOutput.writeUserContent(page.getFlash());

@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlChecksRepository;
 import hexlet.code.repository.UrlsRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.Javalin;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.BufferedReader;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
 public class AppTest {
@@ -82,9 +81,7 @@ public class AppTest {
     @Test
     void testShowUrlHandler() throws Exception {
         JavalinTest.test(app, (server, client) -> {
-            var createdAt = new Timestamp(System.currentTimeMillis());
             var existingUrl = new Url("https://ru.hexlet.io/projects/72/members/39826?step=6");
-            existingUrl.setCreatedAt(createdAt);
             UrlsRepository.save(existingUrl);
             var response = client.get("/urls/" + existingUrl.getId());
             var response2 = client.post("/urls/" + existingUrl.getId() + "/checks");
@@ -95,14 +92,17 @@ public class AppTest {
 
     @Test
     public void testCheckPath() throws SQLException {
-        var createdAt = new Timestamp(System.currentTimeMillis());
-        var url = new Url(10L, testUrl);
-        url.setCreatedAt(createdAt);
+        var url = new Url(1L, testUrl);
         UrlsRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             try (var response = client.post(NamedRoutes.urlCheckPath(1L))) {
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(response.body().string()).contains("fake description", "FAKE H1", "Fake Title");
+                var actualCheck = UrlChecksRepository.getEntitiesByUrlId(1L).getFirst();
+                assertThat(actualCheck.getStatusCode()).isEqualTo(200);
+                assertThat(actualCheck.getTitle()).isEqualTo("Fake Title");
+                assertThat(actualCheck.getH1()).isEqualTo("FAKE H1");
+                assertThat(actualCheck.getDescription()).isEqualTo("fake description");
             }
         });
     }
